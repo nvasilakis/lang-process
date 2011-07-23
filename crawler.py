@@ -11,6 +11,7 @@ __author__ = 'nv'
 class Crawler:
     def __init__(self, filename=["http://www.ceid.upatras.gr/"]):
         self.queue = filename
+        self.history = filename
         self.notes = {}
         #links = [[i, "", ] for i in seed]
 
@@ -28,7 +29,7 @@ class Crawler:
         usock = urllib.urlopen(link)
         parser = Parser()
         source = usock.read()
-        if source.__len__() > 1:
+        if source.__len__() > 1000:  # Change page character limie
             f.write(" [" + str(source.__len__()) + "]  * \n")
             self.notes[link]="working"
         parser.feed(source) # parses all the html source
@@ -36,11 +37,11 @@ class Crawler:
         usock.close()
         f.write("-----")
         for url in parser.urls:
-
             if 'http' not in url:
                url = link + url
-            if url not in self.queue and url not in self.notes.keys():
+            if url not in self.history:
                 self.queue.append(url)
+                self.history.append(url)
                 #f.write(url + "\n")
         f.close()
 
