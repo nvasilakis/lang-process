@@ -21,11 +21,12 @@ class Crawler:
         2. Push children URLs to queue if they pass all crawling validations
 
         """
-        link = self.queue.pop()
+        link = self.queue.pop(0)
         #for link in nea:
         #one_level
         f = open("crawler.log", "a")
-        f.write(link)
+        f.write("+++++++++++" + link)
+        # todo implement timeout!!!
         usock = urllib.urlopen(link)
         parser = Parser()
         source = usock.read()
@@ -35,14 +36,13 @@ class Crawler:
         parser.feed(source) # parses all the html source
         parser.close()
         usock.close()
-        f.write("-----")
         for url in parser.urls:
             if 'http' not in url:
                url = link + url
             if url not in self.history:
                 self.queue.append(url)
                 self.history.append(url)
-                #f.write(url + "\n")
+                f.write(url + "\n")
         f.close()
 
     def status(self):
@@ -53,12 +53,13 @@ class Crawler:
 
     def keep_crawling(self):
         # change length of notes to adjust time of execution
-        if self.notes.__len__() < 10:
+        if self.notes.__len__() < 100:
             return True;
 
 
 if __name__ == "__main__":
-    seed = ["http://www.ceid.upatras.gr/", "http://www.catonmat.net"] # "http://www.catb.org/~esr/",
+    print " *** TODO: Implement Timeout: 2 seconds ***"
+    seed = ["http://www.ceid.upatras.gr/", "http://www.python.org/"] # "http://www.catb.org/~esr/",
     spider = Crawler(seed)
     while spider.keep_crawling():
         spider.crowl()
