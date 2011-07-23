@@ -15,7 +15,11 @@ class Parser(SGMLParser):
     # methods defined in descendants of an object as well as the object
     # itself.
 	def start_a(self, attrs):
-		href = ["%s" % v  for k, v in attrs if k=='href' and 'mailto' not in v]
+		href = ["%s" % v  for k, v in attrs if k=='href' and
+                'mailto' not in v and
+                '.com' in v and 'acm.org' not in v and
+                'wikipedia' not in v and '.gov' not in v
+        ]
 		if href:
 			self.urls.extend(href)
 
