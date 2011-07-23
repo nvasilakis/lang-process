@@ -1,7 +1,7 @@
 """Extract list of URLs in a web page
 
 This library is used to extract URLs from web pages. It is part of the language
-processing project and directly used in the crowler class
+processing project and directly used in the crawler class
 """
 from sgmllib import SGMLParser
 
@@ -11,14 +11,16 @@ class Parser(SGMLParser):
 		self.made = []
 		self.urls = []
 
-    # What you may not have realized before is that getattr will find
-    # methods defined in descendants of an object as well as the object
-    # itself.
+    # Defining a number of filters in order to check if a link is valid
+    # for addition in the URL queue
 	def start_a(self, attrs):
 		href = ["%s" % v  for k, v in attrs if k=='href' and
                 'mailto' not in v and
                 '.com' in v and 'acm.org' not in v and
-                'wikipedia' not in v and '.gov' not in v
+                'wikipedia' not in v and '.gov' not in v and
+                'pdf' not in v and 'doc' not in v and
+                'xls' not in v and 'php' not in v and
+                'js' not in v
         ]
 		if href:
 			self.urls.extend(href)
