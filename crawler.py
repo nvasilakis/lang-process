@@ -2,6 +2,9 @@
 
 This library is used to crawl web pages using the parser to extract links
 It is part of the language processing project.
+
+TODO: Implement asynchronous crawling or somehow threading -->
+http://oubiwann.blogspot.com/2008/06/async-batching-with-twisted-walkthrough.html
 """
 from parserutils import Parser
 import urllib
