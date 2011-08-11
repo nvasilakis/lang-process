@@ -6,6 +6,7 @@ It is part of the language processing project.
 TODO: Implement asynchronous crawling or somehow threading -->
 http://oubiwann.blogspot.com/2008/06/async-batching-with-twisted-walkthrough.html
 """
+from page import Page
 from parserutils import Parser
 import urllib
 
@@ -33,12 +34,16 @@ class Crawler:
         usock = urllib.urlopen(link)
         parser = Parser()
         source = usock.read()
-        if source.__len__() > 1000:  # Change page character limit
-            f.write(" [" + str(source.__len__()) + "]  * \n")
-            self.notes[link]="working"
         parser.feed(source) # parses all the html source
         parser.close()
         usock.close()
+        if source.__len__() > 1000:  # Change page character limit
+            f.write(" [" + str(source.__len__()) + "]  * \n")
+            self.notes[link]="working"
+            webPage = Page(link, source)
+            webPage.tokenized = parser.text
+            webPage.flash()
+            webPage.flashTkn()
         for url in parser.urls:
             if 'http' not in url:
                url = link + url

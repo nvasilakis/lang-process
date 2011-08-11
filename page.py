@@ -24,15 +24,24 @@ class Page:
         transform = (transform[-1]=="|") and transform[:-2] or transform
         transform=  transform.__len__() > 10 and transform[4:5+4] + transform[-5:] or transform
         self.id = transform + "--" + str(self.__class__.numberOfPages)
-        self.content = rawData
+        self.raw = rawData
+        self.tokenized = []
 
     def output(self):
         print self.numberOfPages, " | striped: ", self.striped, " | id:", self.id
 
     def flash(self):
-        file = open("local/" + self.id, "w")
-        file.write(self.content)
+        file = open("local/" + self.id + ".html", "w") #Adding a .html extension for easiness
+        file.write(self.raw)
         file.close()
+
+    def flashTkn(self):
+        file = open("local/" + self.id + ".tkn", "w") #Adding a .tkn extension for consistency
+        file.write("".join(self.tokenized))
+        file.close()
+
+    def tokenize(self):
+        pass
 
 if __name__ == "__main__":
     print "starting..."
