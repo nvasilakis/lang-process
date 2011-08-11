@@ -31,13 +31,19 @@ class Page:
         print self.numberOfPages, " | striped: ", self.striped, " | id:", self.id
 
     def flash(self):
+        print "flashing ", self.url
         file = open("local/" + self.id + ".html", "w") #Adding a .html extension for easiness
         file.write(self.raw)
         file.close()
 
     def flashTkn(self):
         file = open("local/" + self.id + ".tkn", "w") #Adding a .tkn extension for consistency
-        file.write("".join(self.tokenized))
+        data1 = "".join(self.tokenized)
+        data2 = data1.split()
+        data = "\n".join(data2)
+        #data = [d for d in data if d!=""]
+        #introduce re!
+        file.write("".join(data1))
         file.close()
 
     def tokenize(self):
