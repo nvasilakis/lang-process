@@ -33,7 +33,7 @@ class Crawler:
         usock = urllib.urlopen(link)
         parser = Parser()
         source = usock.read()
-        if source.__len__() > 1000:  # Change page character limie
+        if source.__len__() > 1000:  # Change page character limit
             f.write(" [" + str(source.__len__()) + "]  * \n")
             self.notes[link]="working"
         parser.feed(source) # parses all the html source
