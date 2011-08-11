@@ -27,18 +27,19 @@ class Page:
         self.content = rawData
 
     def output(self):
-        print self.numberOfPages, " | "
         print self.numberOfPages, " | striped: ", self.striped, " | id:", self.id
 
     def flash(self):
-        file = open(self.id, "w")
+        file = open("local/" + self.id, "w")
         file.write(self.content)
         file.close()
 
 if __name__ == "__main__":
     print "starting..."
-    ena = Page("http://www.ceid.upatras.gr/index.html","")
+    ena = Page("http://www.ceid.upatras.gr/index.html","Hello1")
     ena.output()
-    duo = Page("http://www.mozilla.com/en-US/firefox/central/","")
+    ena.flash()
+    duo = Page("http://www.mozilla.com/en-US/firefox/central/","Hello2")
     duo.output()
+    duo.flash()
     print "ending.."
