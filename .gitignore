@@ -3,3 +3,4 @@
 crawler.log
 *.pyc
 local/*
+!local/
