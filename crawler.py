@@ -8,7 +8,7 @@ http://oubiwann.blogspot.com/2008/06/async-batching-with-twisted-walkthrough.htm
 """
 from page import Page
 from parserutils import Parser
-import urllib
+import urllib2
 
 __author__ = 'nv'
 
@@ -31,12 +31,15 @@ class Crawler:
         f = open("crawler.log", "a")
         f.write("+++++++++++" + link)
         # todo implement timeout!!!
-        usock = urllib.urlopen(link)
+        request = urllib2.Request(link)
+        opener = urllib2.build_opener()
+
+        # source = urllib.urlopen(link).read()
         parser = Parser()
-        source = usock.read()
+        source = opener.open(request, timeout=2).read()
         parser.feed(source) # parses all the html source
         parser.close()
-        usock.close()
+        opener.close()
         if source.__len__() > 1000:  # Change page character limit
             f.write(" [" + str(source.__len__()) + "]  * \n")
             self.notes[link]="working"
@@ -66,6 +69,7 @@ class Crawler:
 
 
 if __name__ == "__main__":
+    print " *** Be sure to create a 'local' subdir ***"
     print " *** TODO: Implement Timeout: 2 seconds ***"
     seed = ["http://www.ceid.upatras.gr/", "http://www.python.org/"] # "http://www.catb.org/~esr/",
     spider = Crawler(seed)
