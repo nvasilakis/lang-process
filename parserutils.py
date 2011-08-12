@@ -26,7 +26,8 @@ class Parser(HTMLParser):
 				'.js' not in v
 		]
 		if href:
-#			print "===>", href
+			if "ics" in href:
+				print "===>", href
 			self.urls.extend(href)
 
 	def start_link(self, attrs):

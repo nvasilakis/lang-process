@@ -45,7 +45,7 @@ class Crawler:
             self.notes[link]="working"
             webPage = Page(link, source)
             webPage.flash()
-            webPage.flashTkn()
+            #webPage.flashTkn()
         for url in parser.urls:
             if 'http' not in url:
                url = link + url

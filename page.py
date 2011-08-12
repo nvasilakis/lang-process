@@ -35,17 +35,23 @@ class Page:
 	def output(self):
 		print self.numberOfPages, " | striped: ", self.striped, " | id:", self.id
 
-	def flash(self):
+	def flash_HTM(self):
 		print "flashing ", self.url
 		file = open("local/" + self.id + ".html", "w") #Adding a .html extension for easiness
 		file.write(self.raw)
 		file.close()
 
-	def flashTkn(self,mode):
+	def flash_TKN(self,mode):
 		self.tokenize(mode)
 		file = open("local/" + self.id + ".tkn", "w") #Adding a .tkn extension for consistency
 		file.write("".join(self.tokenized))
 		file.close()
+
+	def	flash(self):
+		#filetypes = ["htm","tkn"]
+		#[getattr(self,"flash_"+f.upper()) for f in filetypes]
+		self.flash_HTM()
+		self.flash_TKN("max")
 
 	def tokenize(self, granularity="max"): # use granularity to debug!
 		"""
