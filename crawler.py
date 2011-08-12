@@ -19,7 +19,7 @@ class Crawler:
         self.notes = {}
         #links = [[i, "", ] for i in seed]
 
-    def crowl(self):
+    def crawl(self):
         """ The crawling is done in two phases after the URL pops from the queue
         1. Add URL with some info to notes (if source is more than 40k chars incl. html)
         2. Push children URLs to queue if they pass all crawling validations
@@ -44,7 +44,6 @@ class Crawler:
             f.write(" [" + str(source.__len__()) + "]  * \n")
             self.notes[link]="working"
             webPage = Page(link, source)
-            webPage.tokenized = parser.text
             webPage.flash()
             webPage.flashTkn()
         for url in parser.urls:
@@ -74,5 +73,5 @@ if __name__ == "__main__":
     seed = ["http://www.ceid.upatras.gr/", "http://www.python.org/"] # "http://www.catb.org/~esr/",
     spider = Crawler(seed)
     while spider.keep_crawling():
-        spider.crowl()
+        spider.crawl()
     spider.status()

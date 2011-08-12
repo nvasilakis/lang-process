@@ -22,7 +22,8 @@ class Parser(HTMLParser):
 				'wikipedia' not in v and '.gov' not in v and
 				'.pdf' not in v and '.doc' not in v and
 				'.xls' not in v and '.php' not in v and
-				'.cgi' not in v and '.js' not in v
+				'.cgi' not in v and '.ics' not in v and
+				'.js' not in v
 		]
 		if href:
 #			print "===>", href
