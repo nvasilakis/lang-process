@@ -54,28 +54,42 @@ class Page:
 		self.flash_TKN("max")
 
 	def tokenize(self, granularity="max"): # use granularity to debug!
-		"""
-		It extracts actual text from wep pages.
+		""" It extracts actual text from wep pages.
 
 		Implements three granularity levels (min, med, max):
 		 * min represents text in the style of an one-line string
 		 * med represents text in the style closest to the format of a web page
 		 * max represents text in word tokens
+		"+" versions (e.g., max+) do not double-check for trailing punctuation
 		"""
 		strippedJS = clean.clean_html(self.raw)
 		strippedHTML = nltk.util.clean_html(strippedJS)
 		ampersands = "&[a-zA-Z]{2,4};"					# remove html ampersand commands
 		stripped = re.sub(ampersands,"",strippedHTML) 	# such as &amp; &gt; etc
-		tokensFormat = (granularity=="med") and (lambda l: l) or (lambda l: "\n".join(l.split()))
-		self.tokenized = tokensFormat(stripped)
+		tokensFormat = (granularity=="med") and (lambda l: l) or (lambda l: l.split())
+		punctuation = re.compile(r'.+[,.;?\"]{1,3}$')	# split trailing punctuation
+		wrds = tokensFormat(stripped)
+		#wrds2 = [word[:-2] + "++++" + word[-1] for word in wrds if word[-1] in ['.',':']] #",",".",";","?","\"","'"
+		#["--" + word + "--" for word in wrds if word in ['.', ':']] #",",".",";","?","\"","'"
+		#print wrds
+
+		print wrds[31][-1], " | ", wrds[31], " | ", wrds[31][:-1] + "88" + wrds[31][-1]
+
+		for i, word in enumerate(wrds):
+			if word[-1] in [',','.',';','?','\'','"']:
+				wrds[i] = word[:-1] + "\n" + word[-1]
+
+		print wrds[31]
+
+		self.tokenized = "\n".join(wrds)
 		
 
 if __name__ == "__main__":
-	print "starting..."
-	ena = Page("http://www.ceid.upatras.gr/index.html","Hello1")
-	ena.output()
-	ena.flash()
-	duo = Page("http://www.mozilla.com/en-US/firefox/central/","Hello2")
-	duo.output()
-	duo.flash()
-	print "ending.."
+	import urllib2
+
+	request = urllib2.Request("http://www.ironport.com")
+	opener = urllib2.build_opener()
+	source = opener.open(request, timeout=2).read()
+	opener.close()
+	webPage = Page("http://www.ironport.com", source)
+	webPage.flash()
