@@ -58,30 +58,26 @@ class Page:
 
 		Implements three granularity levels (min, med, max):
 		 * min represents text in the style of an one-line string
-		 * med represents text in the style closest to the format of a web page
+		 * mid represents text in the style closest to the format of a web page
 		 * max represents text in word tokens
 		"+" versions (e.g., max+) do not double-check for trailing punctuation
 		"""
+		def maxLambda(l):
+			words = l.split()
+			# impossible with list comprehensions
+			for i, word in enumerate(words):
+				if word[-1] in [',','.',';','?','\'','"']:
+					words[i] = word[:-1] + "\n" + word[-1]
+			l = "\n".join(words)
+
 		strippedJS = clean.clean_html(self.raw)
 		strippedHTML = nltk.util.clean_html(strippedJS)
 		ampersands = "&[a-zA-Z]{2,4};"					# remove html ampersand commands
 		stripped = re.sub(ampersands,"",strippedHTML) 	# such as &amp; &gt; etc
-		tokensFormat = (granularity=="med") and (lambda l: l) or (lambda l: l.split())
+		tokensFormat = (granularity=="mid") and (lambda l: l) or maxLambda(l)
 		punctuation = re.compile(r'.+[,.;?\"]{1,3}$')	# split trailing punctuation
-		wrds = tokensFormat(stripped)
-		#wrds2 = [word[:-2] + "++++" + word[-1] for word in wrds if word[-1] in ['.',':']] #",",".",";","?","\"","'"
-		#["--" + word + "--" for word in wrds if word in ['.', ':']] #",",".",";","?","\"","'"
-		#print wrds
 
-		print wrds[31][-1], " | ", wrds[31], " | ", wrds[31][:-1] + "88" + wrds[31][-1]
-
-		for i, word in enumerate(wrds):
-			if word[-1] in [',','.',';','?','\'','"']:
-				wrds[i] = word[:-1] + "\n" + word[-1]
-
-		print wrds[31]
-
-		self.tokenized = "\n".join(wrds)
+		self.tokenized = tokensFormat(stripped)
 		
 
 if __name__ == "__main__":
