@@ -66,7 +66,7 @@ class Page:
 			words = l.split()
 			# impossible with list comprehensions
 			for i, word in enumerate(words):
-				if word[-1] in [',','.',';','?','\'','"']:
+				if word[-1] in [',','.',';','?','\'','"']:  # TODO something about "word..."
 					words[i] = word[:-1] + "\n" + word[-1]
 			return "\n".join(words)
 

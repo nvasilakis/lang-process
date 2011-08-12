@@ -36,7 +36,7 @@ class Crawler:
 
         # source = urllib.urlopen(link).read()
         parser = Parser()
-        source = opener.open(request, timeout=2).read()
+        source = opener.open(request, timeout=None).read()
         parser.feed(source) # parses all the html source
         parser.close()
         opener.close()
