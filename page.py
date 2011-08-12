@@ -68,13 +68,13 @@ class Page:
 			for i, word in enumerate(words):
 				if word[-1] in [',','.',';','?','\'','"']:
 					words[i] = word[:-1] + "\n" + word[-1]
-			l = "\n".join(words)
+			return "\n".join(words)
 
 		strippedJS = clean.clean_html(self.raw)
 		strippedHTML = nltk.util.clean_html(strippedJS)
 		ampersands = "&[a-zA-Z]{2,4};"					# remove html ampersand commands
 		stripped = re.sub(ampersands,"",strippedHTML) 	# such as &amp; &gt; etc
-		tokensFormat = (granularity=="mid") and (lambda l: l) or maxLambda(l)
+		tokensFormat = (granularity=="mid") and (lambda l: l) or (maxLambda)
 		punctuation = re.compile(r'.+[,.;?\"]{1,3}$')	# split trailing punctuation
 
 		self.tokenized = tokensFormat(stripped)
